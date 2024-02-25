@@ -32,16 +32,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.toList
 
 @OptIn(ExperimentalFoundationApi::class)
-class MainActivity : ComponentActivity() {
+class MainScreen : ComponentActivity() {
 
     private val viewModel: MainScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val list = (1..100).map { it.toString() }
-//        var listOfDishes = listOf<Dish>()
-//
         val context = applicationContext
         viewModel.initializeViewModel(context = context)
 
@@ -59,7 +56,7 @@ fun Title(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "$name",
         modifier = modifier.padding(15.dp),
-        fontSize = 20.sp
+        fontSize = 20.sp,
     )
 }
 
