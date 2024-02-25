@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Recepies"
         tools:targetApi="31">
         <activity
-            android:name=".MainScreen"
+            android:name=".ui.main_screen.MainScreen"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Recepies">

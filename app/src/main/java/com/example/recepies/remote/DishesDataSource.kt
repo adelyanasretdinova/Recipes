@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 class DishesDataSource {
-    suspend fun getProducts(): List<Dish> {
+    suspend fun getListOfAllDishes(): List<Dish> {
         val result = Firebase.database(DATABASE_URl)
             .getReference("/")
             .get()

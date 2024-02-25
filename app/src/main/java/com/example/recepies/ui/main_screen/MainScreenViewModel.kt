@@ -1,4 +1,4 @@
-package com.example.recepies
+package com.example.recepies.ui.main_screen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -17,7 +17,7 @@ class MainScreenViewModel : ViewModel() {
 
     private fun dataLoad() {
         viewModelScope.launch {
-            dishesData.value = dishesDataSource.getProducts()
+            dishesData.value = dishesDataSource.getListOfAllDishes()
         }
     }
 }
