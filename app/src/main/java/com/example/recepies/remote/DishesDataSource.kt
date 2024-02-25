@@ -7,12 +7,12 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 class DishesDataSource {
-        suspend fun getProducts(): List<Dish> {
-            val result = Firebase.database(DATABASE_URl)
-                .getReference("/")
-                .get()
-                .await()
+    suspend fun getProducts(): List<Dish> {
+        val result = Firebase.database(DATABASE_URl)
+            .getReference("/")
+            .get()
+            .await()
 
-            return result.children.mapNotNull { it.getValue(Dish::class.java) }
-        }
+        return result.children.mapNotNull { it.getValue(Dish::class.java) }
+    }
 }

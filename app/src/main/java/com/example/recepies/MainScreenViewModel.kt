@@ -1,29 +1,23 @@
 package com.example.recepies
 
-import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recepies.model.Dish
 import com.example.recepies.remote.DishesDataSource
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainScreenViewModel : ViewModel() {
     private val dishesDataSource = DishesDataSource()
-    private val _dishesData = MutableStateFlow<List<Dish>>(listOf())
-//    val dishesData = _dishesData.asStateFlow()
-    fun dishesData() = _dishesData.value
-
-    fun initializeViewModel(context: Context) {
-        dataLoad(context = context)
+    private val dishesData = mutableStateOf<List<Dish>>(listOf())
+    fun dishesData() = dishesData.value
+    init {
+        dataLoad()
     }
 
-    private fun dataLoad(context: Context) {
+    private fun dataLoad() {
         viewModelScope.launch {
-            _dishesData.update { dishesDataSource.getProducts() }
+            dishesData.value = dishesDataSource.getProducts()
         }
     }
-
 }
