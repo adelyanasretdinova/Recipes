@@ -1,8 +1,5 @@
 package com.example.recepies.ui.main_screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -15,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,23 +27,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.recepies.model.Dish
 import com.example.recepies.ui.theme.RecepiesTheme
 import coil.compose.rememberAsyncImagePainter
+import com.example.recepies.Screen
 
-class MainScreen : ComponentActivity() {
+//@Composable
+//fun MainScreen(navController: NavController) {
+//
+//    val viewModel: MainScreenViewModel by viewModels()
+//
+//            MyAppScreen {
+//
+//            }
+//        }
 
-    private val viewModel: MainScreenViewModel by viewModels()
+@Composable
+fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            MyAppScreen {
-                Column {
-                    Title(name = "Our Recipes")
-                    LazyGridContainers(list = viewModel.dishesData())
-                }
+    RecepiesTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            Column {
+                Title(name = "Our Recipes")
+                LazyGridContainers(list = viewModel.dishesData(), navController = navController)
             }
         }
     }
@@ -54,7 +64,7 @@ class MainScreen : ComponentActivity() {
 @Composable
 fun Title(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "$name",
+        text = name,
         modifier = modifier.padding(15.dp),
         fontSize = 35.sp,
         fontWeight = FontWeight.Bold
@@ -62,44 +72,42 @@ fun Title(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MyAppScreen(content: @Composable () -> Unit) {
-    RecepiesTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            content()
-        }
-    }
-}
-
-@Composable
-fun LazyGridContainers(list: List<Dish>) {
+fun LazyGridContainers(list: List<Dish>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
         items(list.size) { index ->
-            Box(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxWidth()
-                    .size(width = 240.dp, height = 240.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = rememberAsyncImagePainter(list[index].image),
-                    contentDescription = null,
+            Button(
+                onClick = {
+                    navController.navigate(Screen.PdpScreen.withArgs(list[index].name))
+                })
+            {
+                Box(
                     modifier = Modifier
-                        .testTag("Image")
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop,
-                    alpha = 0.5F
-                )
-                Text(text = list[index].name, fontWeight = FontWeight.Bold, fontSize = 25.sp, textAlign = TextAlign.Center)
+                        .padding(4.dp)
+                        .fillMaxWidth()
+                        .size(width = 240.dp, height = 240.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(list[index].image),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .testTag("Image")
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop,
+                        alpha = 0.5F
+                    )
+                    Text(
+                        text = list[index].name,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -112,8 +120,9 @@ fun LazyGridContainersPreview() {
         LazyGridContainers(
             listOf(
                 Dish(image = "image1", name = "Name1"),
-                Dish(image = "image2", name = "Name2")
-            )
+                Dish(image = "image2", name = "Name2"),
+            ),
+            navController = rememberNavController()
         )
     }
 }
