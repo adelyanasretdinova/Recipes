@@ -72,7 +72,6 @@ class Pdp :  Fragment() {
             }
         }
     }
-
 }
 
 @Composable
