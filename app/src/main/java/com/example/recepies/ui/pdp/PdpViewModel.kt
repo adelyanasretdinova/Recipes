@@ -14,7 +14,7 @@ class PdpViewModel : ViewModel() {
     private val oneDishData = mutableStateOf<Dish?>(null)
     fun oneDishData() = oneDishData.value
 
-    private fun loadOneDish(id: String) {
+    fun loadOneDish(id: String) {
         viewModelScope.launch {
             oneDishData.value = oneDishDataSource.getOneDish(id)
         }

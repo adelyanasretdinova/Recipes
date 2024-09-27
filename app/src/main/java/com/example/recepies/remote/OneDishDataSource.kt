@@ -8,8 +8,7 @@ import kotlinx.coroutines.tasks.await
 
 class OneDishDataSource {
     suspend fun getOneDish(id: String): Dish? {
-        val result =
-            Firebase.database(DATABASE_URl)
+        val result = Firebase.database(DATABASE_URl)
                 .getReference("/")
                 .get()
                 .await()
